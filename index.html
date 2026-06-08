@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>易购优选 - Web 编程技术大作业</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="top-bar">
+    <div class="brand">
+      <button class="brand-mark" type="button" data-page="home" aria-label="返回首页">E</button>
+      <div>
+        <h1>易购优选</h1>
+        <p>品质生活商城</p>
+      </div>
+    </div>
+
+    <nav class="nav-links" aria-label="主导航">
+      <button type="button" class="nav-link active" data-page="home">首页</button>
+      <button type="button" class="nav-link" data-page="cart">购物车 <span id="cartCount" class="count-badge">0</span></button>
+      <button type="button" class="nav-link" data-page="profile">个人中心</button>
+      <button type="button" class="nav-link admin-only" data-page="admin" hidden>商品管理</button>
+    </nav>
+
+    <div class="user-area" id="userArea"></div>
+    <div class="student-badge" id="studentBadge"></div>
+  </header>
+
+  <main class="page-shell">
+    <section id="homePage" class="page active-page" aria-labelledby="homeTitle">
+      <div class="banner" aria-label="活动轮播图">
+        <div class="banner-track" id="bannerTrack">
+          <article class="banner-slide">
+            <img src="assets/banner-digital.svg" alt="数码新品活动">
+            <div class="banner-copy">
+              <p>数码焕新</p>
+              <h2 id="homeTitle">智能装备限时直降</h2>
+              <span>耳机、手表、平板精选好物</span>
+            </div>
+          </article>
+          <article class="banner-slide">
+            <img src="assets/banner-fashion.svg" alt="服饰穿搭活动">
+            <div class="banner-copy">
+              <p>春夏穿搭</p>
+              <h2>服饰箱包满减专区</h2>
+              <span>通勤、运动、旅行一站配齐</span>
+            </div>
+          </article>
+          <article class="banner-slide">
+            <img src="assets/banner-home.svg" alt="家居生活活动">
+            <div class="banner-copy">
+              <p>生活家</p>
+              <h2>家居日用好物上新</h2>
+              <span>从桌面到厨房都更顺手</span>
+            </div>
+          </article>
+        </div>
+        <button class="banner-btn prev" id="prevBanner" type="button" aria-label="上一张">‹</button>
+        <button class="banner-btn next" id="nextBanner" type="button" aria-label="下一张">›</button>
+        <div class="banner-dots" id="bannerDots" aria-label="轮播指示器"></div>
+      </div>
+
+      <div class="home-tools">
+        <label class="search-box" for="homeSearchInput">
+          <span aria-hidden="true">⌕</span>
+          <input id="homeSearchInput" type="search" placeholder="搜索商品名称、分类或说明">
+          <button id="homeSearchBtn" type="button">搜索</button>
+        </label>
+        <select id="sortSelect" class="sort-select" aria-label="商品排序">
+          <option value="default">默认排序</option>
+          <option value="priceAsc">价格从低到高</option>
+          <option value="priceDesc">价格从高到低</option>
+          <option value="salesDesc">销量优先</option>
+        </select>
+      </div>
+
+      <div class="category-filter" id="categoryFilter" aria-label="商品分类"></div>
+      <div id="productGrid" class="product-grid"></div>
+    </section>
+
+    <section id="detailPage" class="page detail-layout" aria-labelledby="detailTitle">
+      <button class="back-link" type="button" data-page="home">← 返回首页</button>
+      <div class="detail-media">
+        <img id="detailImage" src="" alt="">
+      </div>
+      <div class="detail-info">
+        <p id="detailCategory" class="pill"></p>
+        <h2 id="detailTitle"></h2>
+        <p id="detailDesc" class="detail-desc"></p>
+        <div class="detail-meta">
+          <strong id="detailPrice"></strong>
+          <span id="detailStock"></span>
+          <span id="detailSales"></span>
+        </div>
+        <div class="quantity-control">
+          <button type="button" id="detailMinus">−</button>
+          <input type="number" id="detailQty" min="1" value="1">
+          <button type="button" id="detailPlus">+</button>
+        </div>
+        <div class="action-row">
+          <button class="primary-btn" type="button" id="detailAddCart">加入购物车</button>
+          <button class="secondary-btn" type="button" id="detailBuyNow">立即购买</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="loginPage" class="page form-page" aria-labelledby="loginTitle">
+      <form class="form-panel" id="loginForm" novalidate>
+        <h2 id="loginTitle">账户登录</h2>
+        <label>用户名<input type="text" id="loginUser" autocomplete="username"></label>
+        <label>密码<input type="password" id="loginPwd" autocomplete="current-password"></label>
+        <button class="primary-btn" type="submit">登录</button>
+        <p class="form-error" id="loginError"></p>
+        <p class="form-switch">还没有账号？<button type="button" data-page="register">立即注册</button></p>
+      </form>
+    </section>
+
+    <section id="registerPage" class="page form-page" aria-labelledby="registerTitle">
+      <form class="form-panel" id="registerForm" novalidate>
+        <h2 id="registerTitle">用户注册</h2>
+        <label>用户名<input type="text" id="regUser" autocomplete="username" placeholder="至少 3 位"></label>
+        <label>邮箱<input type="email" id="regEmail" autocomplete="email"></label>
+        <label>密码<input type="password" id="regPwd" autocomplete="new-password" placeholder="至少 6 位"></label>
+        <button class="primary-btn" type="submit">注册</button>
+        <p class="form-error" id="regError"></p>
+        <p class="form-switch">已有账号？<button type="button" data-page="login">去登录</button></p>
+      </form>
+    </section>
+
+    <section id="cartPage" class="page" aria-labelledby="cartTitle">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Shopping Cart</p>
+          <h2 id="cartTitle">我的购物车</h2>
+        </div>
+        <button class="secondary-btn" type="button" data-page="home">继续购物</button>
+      </div>
+      <div id="cartList" class="cart-list"></div>
+      <div class="checkout-bar">
+        <span id="cartTotal">合计：¥0.00</span>
+        <button class="primary-btn" type="button" id="gotoCheckoutBtn">去结算</button>
+      </div>
+    </section>
+
+    <section id="checkoutPage" class="page" aria-labelledby="checkoutTitle">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Checkout</p>
+          <h2 id="checkoutTitle">确认订单</h2>
+        </div>
+      </div>
+      <div class="checkout-layout">
+        <div id="orderSummary" class="order-summary"></div>
+        <form id="checkoutForm" class="form-panel compact-form" novalidate>
+          <label>收货人<input id="receiverName" type="text" placeholder="请输入姓名"></label>
+          <label>联系电话<input id="orderPhone" type="tel" placeholder="11 位手机号"></label>
+          <label>收货地址<textarea id="orderAddress" rows="4" placeholder="省市区、街道、门牌号"></textarea></label>
+          <label>支付方式
+            <select id="payMethod">
+              <option value="online">在线支付</option>
+              <option value="cod">货到付款</option>
+            </select>
+          </label>
+          <button class="primary-btn" type="submit">提交订单</button>
+          <p class="form-error" id="checkoutError"></p>
+        </form>
+      </div>
+    </section>
+
+    <section id="profilePage" class="page" aria-labelledby="profileTitle">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Member Center</p>
+          <h2 id="profileTitle">个人中心</h2>
+        </div>
+      </div>
+      <div class="profile-grid">
+        <div class="profile-panel">
+          <h3>账户信息</h3>
+          <div id="profileInfo" class="profile-info"></div>
+        </div>
+        <form id="passwordForm" class="form-panel compact-form" novalidate>
+          <h3>修改密码</h3>
+          <label>原密码<input type="password" id="oldPwd"></label>
+          <label>新密码<input type="password" id="newPwd" placeholder="至少 6 位"></label>
+          <button class="secondary-btn" type="submit">保存密码</button>
+          <p class="form-error" id="passwordError"></p>
+        </form>
+      </div>
+      <h3 class="sub-title">历史订单</h3>
+      <div id="orderHistory" class="order-history"></div>
+    </section>
+
+    <section id="adminPage" class="page" aria-labelledby="adminTitle">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Product Admin</p>
+          <h2 id="adminTitle">商品管理</h2>
+        </div>
+      </div>
+      <div class="admin-grid">
+        <form id="productForm" class="form-panel compact-form" novalidate>
+          <h3>新增商品</h3>
+          <label>名称<input id="newName" type="text"></label>
+          <label>分类<input id="newCat" type="text"></label>
+          <label>价格<input id="newPrice" type="number" min="0" step="0.01"></label>
+          <label>库存<input id="newStock" type="number" min="0" step="1"></label>
+          <label>图片路径<input id="newImage" type="text" value="assets/product-gift.svg"></label>
+          <label>说明<textarea id="newDesc" rows="3"></textarea></label>
+          <button class="primary-btn" type="submit">添加商品</button>
+          <p class="form-error" id="productError"></p>
+        </form>
+        <div class="admin-table-wrap">
+          <label class="table-search">商品搜索<input id="adminSearchInput" type="search" placeholder="输入商品名称"></label>
+          <table class="admin-table">
+            <thead>
+              <tr><th>ID</th><th>名称</th><th>分类</th><th>价格</th><th>库存</th><th>操作</th></tr>
+            </thead>
+            <tbody id="adminTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>Web 编程技术大作业</span>
+    <span id="footerStudent"></span>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="js/main.js"></script>
+</body>
+</html>
